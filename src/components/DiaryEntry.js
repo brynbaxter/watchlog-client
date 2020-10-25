@@ -26,6 +26,7 @@ const styles = {
     padding: 25,
     objectFit: 'cover',
   },
+  height: 200,
 };
 
 class DiaryEntry extends Component {
@@ -55,7 +56,19 @@ class DiaryEntry extends Component {
       <Card className={classes.card}>
         <CardHeader avatar={
           <Avatar src={userImage} aria-label="User image" className={classes.avatar}></Avatar>
-        }/>
+        }
+        title={
+          <Typography
+            variant="h5"
+            component={Link}
+            to={`/users/${userHandle}`}
+            color="primary"
+          >
+            {userHandle}
+          </Typography>
+        }
+        subheader={dayjs(createdAt).fromNow()}
+        />
         <CardContent className={classes.details}>
           <Typography
             variant="h5"
@@ -69,16 +82,16 @@ class DiaryEntry extends Component {
             {dayjs(createdAt).fromNow()}
           </Typography>
           <Typography variant="body1">{seriesTitle}</Typography>
-                <Grid container spacing={2}>
-          <Grid item><Typography variant="body1">Season {seasonNum} episode {episodeNum}</Typography></Grid>
-          <Grid item><Typography variant="body1">{episodeTitle}</Typography></Grid>
+          <Grid container spacing={2}>
+            <Grid item><Typography variant="body1">Season {seasonNum} episode {episodeNum}</Typography></Grid>
+            <Grid item><Typography variant="body1">{episodeTitle}</Typography></Grid>
           </Grid>
-            <Rating name="half-rating-read" defaultValue={reviewScore / 2} precision={0.5} readOnly />
+          <Rating name="half-rating-read" defaultValue={reviewScore / 2} precision={0.5} readOnly />
           <Typography variant="body1">{reviewText}</Typography>
-            </CardContent>
-            <CardMedia image={episodeThumbnail} title="Episode image" className={classes.image} />
-            <CardMedia image={seasonBackdrop} title="Season backdrop" className={classes.image} />
-            <CardMedia image={seriesBackdrop} title="Series backdrop" className={classes.image} />
+            </CardContent>  
+            <CardMedia image={episodeThumbnail} title="Episode image" className={classes.image} style={styles} />
+            <CardMedia image={seasonBackdrop} title="Season backdrop" className={classes.image} style={styles} />
+            <CardMedia image={seriesBackdrop} title="Series backdrop" className={classes.image} style={styles} />
       </Card>
     );
   }
