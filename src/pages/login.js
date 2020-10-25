@@ -14,6 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme) => ({
   ...theme.spreadIt,
+  fontColor: 'white',
 });
 
 class login extends Component {

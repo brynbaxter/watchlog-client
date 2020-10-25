@@ -9,7 +9,7 @@ export class Navbar extends Component {
   render() {
     return (
       <div>
-        <AppBar>
+        <AppBar /* position="static" */>
           <Toolbar className="nav-container">
             <Button color="inherit" component={Link} to="/login">
               Login
