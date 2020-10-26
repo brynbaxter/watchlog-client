@@ -5,9 +5,15 @@ import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import themeFile from './util/theme';
 import jwtDecode from 'jwt-decode';
+
+// Redux
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
 // Components
 import Navbar from './components/Navbar';
 import AuthRoute from './util/AuthRoute';
+
 // Pages
 import home from './pages/home';
 import login from './pages/login';
@@ -31,7 +37,10 @@ if (token) {
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <div className="App">
+      <Provider store={store}>
+        {' '}
+        // MuiThemeProvider and store provider don't interact so either can
+        technically wrap the other
         <Router>
           <Navbar />
           <div className="container">
@@ -53,7 +62,7 @@ function App() {
             </Switch>
           </div>
         </Router>
-      </div>
+      </Provider>
     </MuiThemeProvider>
   );
 }
