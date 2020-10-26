@@ -19,14 +19,16 @@ const styles = {
     // display: 'flex',
     marginBottom: 20,
   },
-  image: {
-    minWidth: 200,
-  },
   content: {
     padding: 25,
     objectFit: 'cover',
   },
-  height: 200,
+  image: {
+    height: '100%',
+    width: '50%',
+    borderRadius: '6px',
+    border: '2px solid black',
+  },
 };
 
 class DiaryEntry extends Component {
@@ -34,64 +36,97 @@ class DiaryEntry extends Component {
     dayjs.extend(relativeTime);
     const {
       classes,
-        diaryEntry: {
-          commentCount,
-            createdAt,
-            episodeNum,
-            episodeThumbnail,
-            episodeTitle,
-            likeCount,
-            reviewScore,
-            reviewText,
-            seasonBackdrop,
-            seasonNum,
-            seriesBackdrop,
-            seriesId,
-            seriesTitle,
-            userHandle,
+      diaryEntry: {
+        commentCount,
+        createdAt,
+        episodeNum,
+        episodeThumbnail,
+        episodeTitle,
+        likeCount,
+        posterPath,
+        reviewScore,
+        reviewText,
+        seasonBackdrop,
+        seasonNum,
+        seriesBackdrop,
+        seriesId,
+        seriesTitle,
+        userHandle,
         userImage,
       },
     } = this.props;
     return (
       <Card className={classes.card}>
-        <CardHeader avatar={
-          <Avatar src={userImage} aria-label="User image" className={classes.avatar}></Avatar>
-        }
-        title={
-          <Typography
-            variant="h5"
-            component={Link}
-            to={`/users/${userHandle}`}
-            color="primary"
-          >
-            {userHandle}
-          </Typography>
-        }
-        subheader={dayjs(createdAt).fromNow()}
+        <CardHeader
+          avatar={
+            <Avatar
+              src={userImage}
+              aria-label="User image"
+              className={classes.avatar}
+            ></Avatar>
+          }
+          title={
+            <Typography
+              variant="h5"
+              component={Link}
+              to={`/users/${userHandle}`}
+              color="primary"
+            >
+              {userHandle}
+            </Typography>
+          }
+          subheader={dayjs(createdAt).fromNow()}
         />
         <CardContent className={classes.details}>
-          <Typography
-            variant="h5"
-            component={Link}
-            to={`/users/${userHandle}`}
-            color="primary"
-          >
-            {userHandle}
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            {dayjs(createdAt).fromNow()}
-          </Typography>
-          <Typography variant="body1">{seriesTitle}</Typography>
           <Grid container spacing={2}>
-            <Grid item><Typography variant="body1">Season {seasonNum} episode {episodeNum}</Typography></Grid>
-            <Grid item><Typography variant="body1">{episodeTitle}</Typography></Grid>
+            <Grid item sm={4}>
+              <Typography variant="body1">{seriesTitle}</Typography>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Typography variant="body1">
+                    Season {seasonNum} episode {episodeNum}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">{episodeTitle}</Typography>
+                </Grid>
+              </Grid>
+              <Rating
+                name="half-rating-read"
+                defaultValue={reviewScore / 2}
+                precision={0.5}
+                readOnly
+              />
+              <Typography variant="body1">{reviewText}</Typography>
+            </Grid>
+            <Grid item sm={8}>
+              {/* <CardMedia
+                image={posterPath}
+                title="Series poster"
+                className={classes.image}
+                style={styles}
+              /> */}
+              <CardMedia
+                image={episodeThumbnail}
+                title="Episode image"
+                className={classes.image}
+                style={styles}
+              />
+              {/* <CardMedia
+                image={seasonBackdrop}
+                title="Season backdrop"
+                className={classes.image}
+                style={styles}
+              />
+              <CardMedia
+                image={seriesBackdrop}
+                title="Series backdrop"
+                className={classes.image}
+                style={styles}
+              /> */}
+            </Grid>
           </Grid>
-          <Rating name="half-rating-read" defaultValue={reviewScore / 2} precision={0.5} readOnly />
-          <Typography variant="body1">{reviewText}</Typography>
-            </CardContent>  
-            <CardMedia image={episodeThumbnail} title="Episode image" className={classes.image} style={styles} />
-            <CardMedia image={seasonBackdrop} title="Season backdrop" className={classes.image} style={styles} />
-            <CardMedia image={seriesBackdrop} title="Series backdrop" className={classes.image} style={styles} />
+        </CardContent>
       </Card>
     );
   }
