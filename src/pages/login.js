@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 // MUI Stuff
@@ -10,10 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-// Redux stuff
-import { connect } from 'react-redux';
-import { loginUser } from '../redux/actions/userActions';
 
 const styles = (theme) => ({
   ...theme.spreadIt,
@@ -29,7 +26,6 @@ class login extends Component {
       errors: {},
     };
   }
-
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -39,7 +35,22 @@ class login extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    this.props.loginUser(userData, this.props.history);
+    axios
+      .post('/login', userData)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
+        this.setState({
+          loading: false,
+        });
+        this.props.history.push('/');
+      })
+      .catch((err) => {
+        this.setState({
+          errors: err.response.data,
+          loading: false,
+        });
+      });
   };
   handleChange = (event) => {
     this.setState({
@@ -48,11 +59,8 @@ class login extends Component {
   };
 
   render() {
-    const {
-      classes,
-      UI: { loading },
-    } = this.props;
-    const { errors } = this.state;
+    const { classes } = this.props;
+    const { errors, loading } = this.state;
 
     return (
       <Grid container className={classes.form}>
@@ -118,21 +126,6 @@ class login extends Component {
 
 login.propTypes = {
   classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-  UI: state.UI,
-});
-
-const mapActionsToProps = {
-  loginUser,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(login));
+export default withStyles(styles)(login);
