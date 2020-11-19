@@ -42,9 +42,8 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
-        {' '}
-        // MuiThemeProvider and store provider don't interact so either can
-        technically wrap the other
+        {/* MuiThemeProvider and store provider don't interact so either can
+        technically wrap the other */}
         <Router>
           <Navbar />
           <div className="container">
